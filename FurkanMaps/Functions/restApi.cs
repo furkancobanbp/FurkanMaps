@@ -8,7 +8,7 @@ namespace FurkanMaps.Functions
 {
     public class restApi
     {         
-        public String WeatherApiKey = "378040fe1f0f427184983253230604";
+        public String WeatherApiKey = "";
         public String WeatherApiBaseUrl = "http://api.weatherapi.com/v1";
         
 

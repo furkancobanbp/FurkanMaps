@@ -26,18 +26,14 @@ namespace FurkanMaps.Model
 
         private void btnVeriGetir_Click(object sender, EventArgs e)
         {
-
-            DateTime baslangicTarihi = DateTime.UtcNow.AddDays(-2).Date.AddHours(-3);
+            DateTime baslangicTarihi = DateTime.UtcNow.AddDays(-1).Date.AddHours(-3);
             DateTime bitisTarihi = baslangicTarihi.AddHours(23);
-
-            /* */
 
             using (context context = new context())
             {
                 var list = context.tblSehir.ToList();
                 sehirList.AddRange(list);
                 GMap.NET.WindowsForms.GMapOverlay markerOverlay = new GMap.NET.WindowsForms.GMapOverlay();
-                
 
                 foreach (clsSehir i in sehirList)
                 {
@@ -48,13 +44,12 @@ namespace FurkanMaps.Model
                     var weatherData = context.tblHistoricWeatherData.
                         Where(p => p.time >= baslangicTarihi && p.time <= bitisTarihi).Where(s => s.city == i.SehirAdi).
                         GroupBy(p => p.city).
-                        Select(p => new MapWeather { city = p.Key, temp_c = p.Average(s => s.temp_c), time = baslangicTarihi }).ToList();   
+                        Select(p => new MapWeather { city = p.Key, temp_c = p.Average(s => s.temp_c), time = baslangicTarihi }).ToList();
 
-                    marker.ToolTipText = i.SehirAdi + ": " + Math.Round(weatherData.FirstOrDefault().temp_c,2) + "°"; // Ýl adý ve hava durumu
+                    marker.ToolTipText = i.SehirAdi + ": " + Math.Round(weatherData.FirstOrDefault().temp_c, 2) + "°"; // Ýl adý ve hava durumu
                     marker.ToolTipMode = GMap.NET.WindowsForms.MarkerTooltipMode.OnMouseOver;
 
                     markerOverlay.Markers.Add(marker);
-
                 }
                 gMapControl1.Overlays.Add(markerOverlay);
             }
